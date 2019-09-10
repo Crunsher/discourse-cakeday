@@ -81,7 +81,7 @@ function initializeCakeday(api, siteSettings) {
       const date = moment(val);
 
       if (params.isBirthday) {
-        return date.format(I18n.t("dates.full_no_year_no_time"));
+        return date.format(I18n.t("dates.full_with_year_no_time"));
       } else {
         return date.format(I18n.t("dates.full_with_year_no_time"));
       }
@@ -127,15 +127,16 @@ export default {
         });
       },
 
-      @observes("userBirthdayMonth", "userBirthdayDay")
+      @observes("userBirthdayYear", "userBirthdayMonth", "userBirthdayDay")
       _setUserDateOfBirth() {
         const userBirthdayMonth = this.get("userBirthdayMonth");
         const userBirthdayDay = this.get("userBirthdayDay");
+		const userBirthdayYear = this.get("userBirthdayYear");
         const user = this.get("model");
         var date = "";
 
-        if (userBirthdayMonth !== "" && userBirthdayDay !== "") {
-          date = `1904-${this.get("userBirthdayMonth")}-${this.get(
+        if (userBirthdayYear !== "" && userBirthdayMonth !== "" && userBirthdayDay !== "") {
+          date = `${this.get("userBirthdayYear")}-${this.get("userBirthdayMonth")}-${this.get(
             "userBirthdayDay"
           )}`;
         }

@@ -8,6 +8,7 @@ export default {
     );
     component.set("days", _.range(1, 32));
     const dateOfBirth = args.model.get("date_of_birth");
+	component.set("userBirthdayYear", moment(dateOfBirth, "YYYY-MM-DD").year());
     component.set(
       "userBirthdayMonth",
       moment(dateOfBirth, "YYYY-MM-DD").month() + 1
@@ -15,13 +16,14 @@ export default {
     component.set("userBirthdayDay", moment(dateOfBirth, "YYYY-MM-DD").date());
 
     const updateBirthday = function() {
+      const userBirthdayYear = component.get("userBirthdayYear");
       const userBirthdayMonth = component.get("userBirthdayMonth");
       const userBirthdayDay = component.get("userBirthdayDay");
       const user = args.model;
       var date = "";
 
-      if (userBirthdayMonth !== "" && userBirthdayDay !== "") {
-        date = `1904-${component.get("userBirthdayMonth")}-${component.get(
+      if (userBirthdayYear !== "" && userBirthdayMonth !== "" && userBirthdayDay !== "") {
+        date = `${component.get("userBirthdayYear")}-${component.get("userBirthdayMonth")}-${component.get(
           "userBirthdayDay"
         )}`;
       }
@@ -29,6 +31,7 @@ export default {
       user.set("date_of_birth", date);
     };
 
+    component.addObserver("userBirthdayYear", updateBirthday);
     component.addObserver("userBirthdayMonth", updateBirthday);
     component.addObserver("userBirthdayDay", updateBirthday);
   }

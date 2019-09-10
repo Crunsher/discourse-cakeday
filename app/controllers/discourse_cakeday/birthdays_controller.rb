@@ -22,9 +22,10 @@ module DiscourseCakeday
 
           users
             .where(
-              "to_char(users.date_of_birth::date, 'MM-DD') IN (?)",
-              (from.to_date..to.to_date).map { |date| date.strftime('%m-%d') }
+              "to_char(users.date_of_birth::date, 'YYYY-MM-DD') IN (?)",
+              (from.to_date..to.to_date).map { |date| date.strftime('%y-%m-%d') }
             )
+            .order("EXTRACT(YEAR FROM users.date_of_birth::date) ASC")
             .order("EXTRACT(MONTH FROM users.date_of_birth::date) ASC")
             .order("EXTRACT(DAY FROM users.date_of_birth::date) ASC")
             .order_by_likes_received
